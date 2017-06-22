@@ -28,7 +28,6 @@ function generatelist () {$.ajax ({
         type: "GET",
         success: function(data) {
           console.log(data)
-
                 $('.top-repos').append(data); //just stick the data on the DOM
         }
     })}
@@ -84,8 +83,6 @@ $('#submitbtn').on('click', function (e){
        console.log("posted!" )});
   });
 });
-
-
 
 
 </script>
