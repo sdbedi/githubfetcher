@@ -9,23 +9,16 @@
   <h3>Enter a GitHub username to fetch:</h3>
   <input type="text" class="ghusername" name="username" />
 
-  <button id="submitbtn" type="submit">Fetch User's Repos</button>
+  <button id="submitbtn" type="submit">Fetch User's Repos</button><br>
+  <h3>Or click to get the top repos on github Right Now:</h3>
+  <button id="topRepos" type="submit">Top Repos on Github</button><br>
 </form>
 
 <table class="top-repos"></table>
 
 <script src="https://code.jquery.com/jquery-2.2.0.js"></script>
 <script>
-$(document).ready(function() { //fire when the doc loads
-    // $.ajax ({
-    //     url: "/repos", //issue get to repos
-    //     type: "GET",
-    //     success: function(data) {
-    //       console.log(data)
-
-    //             $('.top-repos').append(data); //just stick the data on the DOM
-    //     }
-    // })
+$(document).ready(function() { 
     generatelist();
 });
 
@@ -39,19 +32,19 @@ function generatelist () {$.ajax ({
                 $('.top-repos').append(data); //just stick the data on the DOM
         }
     })}
-//
-// TODO:
-//  Respond to the form's `submit` event,
-//  fetch from GitHub's API,
-//  and send result to POST /repos/import
-//
+
+$(#topRepos).on('click', function(e){
+  e.preventDefault();
+  
+})
+
 $('#submitbtn').on('click', function (e){
   e.preventDefault();
   var username = $('.ghusername').val();
   var responsedata = {};
   var $body = $('.top-repos');
   $.get('https://api.github.com/users/' + username + '/repos', username, function (res) {
-    //console.log("I AM THE RES!", res)
+    console.log("I AM THE RES!", res)
     // responsedata = res
     $body.empty();
 

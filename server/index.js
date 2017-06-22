@@ -41,7 +41,6 @@ app.post('/repos/import', function (req, res) {
          })
          .catch(function(err) {
              console.log(err);
-             //knex('users').where('publ', '<', 2000)update('stargazers', entry.stargazers)
          })
     //}
   }
