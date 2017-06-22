@@ -1,0 +1,104 @@
+<html>
+<head>
+  <title>GitHub Fetcher</title>
+</head>
+<body>
+
+<h2>GitHub Fetcher</h2>
+<form class="repo-fetcher">
+  <h3>Enter a GitHub username to fetch:</h3>
+  <input type="text" class="ghusername" name="username" />
+
+  <button id="submitbtn" type="submit">Fetch User's Repos</button>
+</form>
+
+<table class="top-repos"></table>
+
+<script src="https://code.jquery.com/jquery-2.2.0.js"></script>
+<script>
+$(document).ready(function() { //fire when the doc loads
+    // $.ajax ({
+    //     url: "/repos", //issue get to repos
+    //     type: "GET",
+    //     success: function(data) {
+    //       console.log(data)
+
+    //             $('.top-repos').append(data); //just stick the data on the DOM
+    //     }
+    // })
+    generatelist();
+});
+
+
+function generatelist () {$.ajax ({
+        url: "/repos", //issue get to repos
+        type: "GET",
+        success: function(data) {
+          console.log(data)
+
+                $('.top-repos').append(data); //just stick the data on the DOM
+        }
+    })}
+//
+// TODO:
+//  Respond to the form's `submit` event,
+//  fetch from GitHub's API,
+//  and send result to POST /repos/import
+//
+$('#submitbtn').on('click', function (e){
+  e.preventDefault();
+  var username = $('.ghusername').val();
+  var responsedata = {};
+  var $body = $('.top-repos');
+  $.get('https://api.github.com/users/' + username + '/repos', username, function (res) {
+    //console.log("I AM THE RES!", res)
+    // responsedata = res
+    $body.empty();
+
+    res = res.sort(function compareNumbers(a, b) {
+      return b.stargazers_count - a.stargazers_count;
+    });
+
+
+    for (var i = 0; i < res.length; i ++) {
+      //console.log(res[i]);
+      responsedata[i] = {username: username, reponame: res[i].name, stargazers: res[i].stargazers_count, url: res[i].html_url}
+      //console.log(responsedata[i])
+      //var $description = $.parseHTML(res[i].name );
+      //var $repolink = $.parseHTML(res[i].html_url );
+      // var $repoForBody = `<ul>
+      //            <li><strong>Repository: </strong><a href="${res[i].html_url}">"${res[i].name}"</a></li>
+      //            <li><i>Username: </i>"${username}"</li>
+      //            <li>Stargazerz: "${res[i].stargazers_count}"</li>
+      //          </ul>`
+      //    //}).join('')
+      // $( $repoForBody ).appendTo($body);
+      // console.log($description)
+      // $( $description ).appendTo($body);
+      // $( "<br>").appendTo($body);
+      // $( $repolink ).appendTo($body);
+
+      // $( "<br>" ).appendTo($body);
+      // $( "<br>" ).appendTo($body);
+    }
+
+    $.post("/repos/import", responsedata, function () {
+
+      console.log("posted!" )})
+
+    generatelist()
+    //$.get
+
+
+
+})
+
+
+})
+
+
+
+
+</script>
+</body>
+</html>
