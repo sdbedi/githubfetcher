@@ -20,20 +20,9 @@ var knex = require('knex')({
 
 
 app.post('/repos/import', function (req, res) {
-  // TODO
-  //console.log("post recieved!", req.body, "I AM THE RES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", res.body)
-  //iterate through req body - insert each
-  //var objectforRepo = [];
+
   for (var key in req.body) {
     var entry = req.body[key];
-    //console.log(entry);
-    //objectforRepo.push(entry)
-    //raw SQL (only puts one record into db?)
-    // var record = knex('repos').where({
-    //   url: entry.url
-    // }).select('url')
-    // console.log(record)
-    //if (entry.url !== record ) {
       knex.raw('INSERT OR REPLACE INTO repos (username, reponame, stargazers, url) values ("' + entry.username + '", "' + entry.reponame + '", "' + entry.stargazers + '", "' + entry.url  + ' ");')
          .then(function(response) {
              console.log("This bloody worked!")
@@ -42,11 +31,7 @@ app.post('/repos/import', function (req, res) {
          .catch(function(err) {
              console.log(err);
          })
-    //}
   }
-  //console.log("I AM OBJECT FOR REPO", objectforRepo);
-//  knex('repos').insert(objectforRepo).then(function () {
-//    knex.select("*").from('repos').then(function(data) {console.log("I AM THE DATA!!!", data)})});
 
 
   res.status(200);
@@ -55,7 +40,6 @@ app.post('/repos/import', function (req, res) {
 
 
 app.get('/repos', function (req, res) {
-  // TODO
   res.status(200);
   res.type('html');
 
@@ -66,20 +50,17 @@ app.get('/repos', function (req, res) {
           return `<ul>
                 <li><strong>Repository: </strong><a href="${repo.url}">"${repo.reponame}"</a></li>
                 <li><i>Username: </i>"${repo.username}"</li>
-                <li>Stargazerz: "${repo.stargazers}"</li>
+                <li>Stargazers: "${repo.stargazers}"</li>
               </ul>`
         }).join('')
       })
       .then(function (data)  {res.send(data)})
-
-
 
 });
 
 
 app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname,  '../client/', 'index.html'));
-
 
 });
 
