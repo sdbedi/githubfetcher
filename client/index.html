@@ -37,14 +37,7 @@ $('#topRepos').on('click', function(e){
   e.preventDefault();
   var responsedata = {};
   var $body = $('.top-repos');
-    $.get('https://api.github.com/search/repositories?q=stars:>30000', username, function (res) {
-    console.log("I AM THE RES!", res)
-    // responsedata = res
-    //$body.empty();
-
-    //res = res.sort(function compareNumbers(a, b) {
-      return b.stargazers_count - a.stargazers_count;
-    //});
+  
 })
 
 $('#submitbtn').on('click', function (e){
